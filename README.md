@@ -6,7 +6,7 @@
 Código base para el laboratorio de **grafos y Heavy Hitters**.  
 El objetivo es construir un grafo de contactos en dos representaciones distintas, y luego identificar los grupos de personas que concentran más del 20 % de la carga infecciosa total.
 
-El laboratorio se divide en dos tandas. En cada una deberás completar los bloques marcados con `TODO` en los archivos de código base, medir tiempos de ejecución y responder preguntas de reflexión.
+El laboratorio se divide en dos tandas. En cada una deberás completar los bloques marcados con `TODO` en los archivos de código base, medir tiempos de ejecución, calcular la memoria consumida usando Valgrind y responder preguntas de reflexión.
 
 ---
 
@@ -60,7 +60,7 @@ Si no se indica el tamaño, el programa usa `small` por defecto.
 
 ---
 
-## Verificación de memoria
+## Verificación y medición de memoria
 
 ```bash
 valgrind --leak-check=full ./focos data/ -lista
@@ -68,6 +68,18 @@ valgrind --leak-check=full ./focos data/ -matriz
 ```
 
 Valgrind no debe reportar fugas (`0 bytes lost`) en ninguno de los dos casos.
+
+Para medir memoria consumida, usa `massif`, que es la herramienta de Valgrind para perfilar uso de memoria:
+
+```bash
+valgrind --tool=massif --massif-out-file=massif_lista.out ./focos data/ -lista
+ms_print massif_lista.out
+
+valgrind --tool=massif --massif-out-file=massif_matriz.out ./focos data/ -matriz
+ms_print massif_matriz.out
+```
+
+Registra en `README_respuestas.md` el consumo máximo de memoria reportado por `massif` para ambas representaciones, idealmente para los distintos tamaños de dataset.
 
 ---
 
@@ -103,7 +115,7 @@ Nodo 1 | Luis Mora       (3 dias) -> [0, 2]
 [Construccion del grafo: X.XXX ms]
 ```
 
-Con los cuatro datasets, registra los tiempos en `README_respuestas.md` y responde las preguntas de reflexión de la Tanda 1 (ver enunciado).
+Con los cuatro datasets, registra los tiempos y la memoria consumida en `README_respuestas.md` y responde las preguntas de reflexión de la Tanda 1 (ver enunciado).
 
 ---
 
@@ -140,7 +152,7 @@ Componente {Diego Rios, Paula Soto}: 6 dias (18.8%) -> no es foco.
 [Busqueda de focos: X.XXX ms]
 ```
 
-Con los cuatro datasets, registra los tiempos en `README_respuestas.md` y responde las preguntas de reflexión de la Tanda 2 (ver enunciado).
+Con los cuatro datasets, registra los tiempos y la memoria consumida en `README_respuestas.md` y responde las preguntas de reflexión de la Tanda 2 (ver enunciado).
 
 ---
 
@@ -162,6 +174,15 @@ Crea el archivo `README_respuestas.md` con la siguiente estructura:
 | large    |     |     |              |               |
 | xlarge   |     |     |              |               |
 
+### Tabla de memoria de construcción
+
+| Dataset  | mem_lista (KB) | mem_matriz (KB) |
+|----------|----------------|-----------------|
+| small    |                |                 |
+| medium   |                |                 |
+| large    |                |                 |
+| xlarge   |                |                 |
+
 ### Preguntas
 1. ...
 2. ...
@@ -178,6 +199,15 @@ Crea el archivo `README_respuestas.md` con la siguiente estructura:
 | medium   |     |     |              |               |
 | large    |     |     |              |               |
 | xlarge   |     |     |              |               |
+
+### Tabla de memoria de búsqueda de focos
+
+| Dataset  | mem_lista (KB) | mem_matriz (KB) |
+|----------|----------------|-----------------|
+| small    |                |                 |
+| medium   |                |                 |
+| large    |                |                 |
+| xlarge   |                |                 |
 
 ### Preguntas
 1. ...
